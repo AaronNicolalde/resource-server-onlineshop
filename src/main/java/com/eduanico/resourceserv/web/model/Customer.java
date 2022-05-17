@@ -21,10 +21,6 @@ public class Customer {
     @NotNull
     private String username;
 
-    private String address;
-
-    private String paymentMethod;
-
     public Customer(String username) {
         this.username = username;
     }

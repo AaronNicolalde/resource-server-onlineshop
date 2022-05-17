@@ -31,10 +31,16 @@ public class Checkout {
     @PositiveOrZero
     private double total;
 
+    private ArrayList<String> address;
+
+    private ArrayList<String> paymentMethod;
+
 
     public Checkout(Customer customer, List<Product> productList, double total) {
         this.customer = customer;
         this.productList = productList;
         this.total = total;
+        this.address = new ArrayList<>();
+        this.paymentMethod = new ArrayList<>();
     }
 }

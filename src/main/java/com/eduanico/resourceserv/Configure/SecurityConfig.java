@@ -1,6 +1,5 @@
 //package com.eduanico.resourceserv.Configure;
 //
-//import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 //import org.springframework.context.annotation.Configuration;
 //import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 //import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -10,12 +9,12 @@
 //
 //    @Override
 //    protected void configure(HttpSecurity http) throws Exception {
-//        http.requestMatcher(EndpointRequest.to("health"))
-//                .authorizeRequests()
-//                .anyRequest()
-//                .permitAll();
+//        http.authorizeRequests().antMatchers("/api/**").authenticated()
+//        .and().antMatcher("/actuator/health")
+//                .authorizeRequests(authorize -> authorize.anyRequest().permitAll());
+//
 //    }
-////
+//
 //////    @Override
 //////    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 //////        PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
@@ -29,6 +28,5 @@
 //////                .password(encoder.encode("admin"))
 //////                .roles("USER", "ADMIN");
 //////    }
-////
-////
+//
 //}

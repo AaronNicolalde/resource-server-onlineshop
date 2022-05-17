@@ -38,19 +38,43 @@ public class CheckoutController {
     @PostMapping("/add-product")
     public ResponseEntity<ApiResponse> addProductToCheckout(@RequestParam("checkoutId") Long checkoutId,@RequestParam("productName") String productName,@RequestParam("quantity") double quantity){
         checkoutService.addProductToCheckout(checkoutId, productName, quantity);
-        return new ResponseEntity<ApiResponse>(new ApiResponse(true,"Product added to checkout"), HttpStatus.CREATED);
+        return new ResponseEntity<ApiResponse>(new ApiResponse(true,"Product added to checkout"), HttpStatus.OK);
     }
 
-    @PostMapping("/modify-quantity")
+    @PutMapping("/modify-quantity")
     public ResponseEntity<ApiResponse> modifyQuantityOfProduct(@RequestParam("checkoutId") Long checkoutId,@RequestParam("productName") String productName,@RequestParam("quantity") double quantity){
         checkoutService.modifiyProductQuantity(checkoutId, productName, quantity);
-        return new ResponseEntity<ApiResponse>(new ApiResponse(true,"Product added to checkout"), HttpStatus.CREATED);
+        return new ResponseEntity<ApiResponse>(new ApiResponse(true,"Product added to checkout"), HttpStatus.OK);
     }
 
-    @PostMapping("/delete-product")
+    @DeleteMapping(value = "/delete-product")
     public ResponseEntity<ApiResponse> deleteProductFromCheckout(@RequestParam("checkoutId") Long checkoutId,@RequestParam("productName") String productName){
         checkoutService.removeProductFromOrder(checkoutId, productName);
-        return new ResponseEntity<ApiResponse>(new ApiResponse(true,"Product removed from checkout"), HttpStatus.CREATED);
+        return new ResponseEntity<ApiResponse>(new ApiResponse(true,"Product removed from checkout"), HttpStatus.OK);
+    }
+
+    @PostMapping("/set-address")
+    public ResponseEntity<ApiResponse> setAddressForCustomer(@RequestParam("checkoutId") Long checkoutId,@RequestParam("address") String address){
+        checkoutService.setAddressForCustomer(checkoutId, address);
+        return new ResponseEntity<ApiResponse>(new ApiResponse(true,"Address set for customer from checkout"), HttpStatus.OK);
+    }
+
+    @PutMapping("/modify-address")
+    public ResponseEntity<ApiResponse> modifyAddressForCustomer(@RequestParam("checkoutId") Long checkoutId,@RequestParam("address") String address){
+        checkoutService.modifyAddressForCustomer(checkoutId, address);
+        return new ResponseEntity<ApiResponse>(new ApiResponse(true,"Address modify for customer from checkout"), HttpStatus.OK);
+    }
+
+    @PostMapping("/set-payment")
+    public ResponseEntity<ApiResponse> setPaymentForCustomer(@RequestParam("checkoutId") Long checkoutId,@RequestParam("payment") String payment){
+        checkoutService.setPaymentMethod(checkoutId, payment);
+        return new ResponseEntity<ApiResponse>(new ApiResponse(true,"Payment method set for customer from checkout"), HttpStatus.OK);
+    }
+
+    @PutMapping("/modify-payment")
+    public ResponseEntity<ApiResponse> modifyPaymentForCustomer(@RequestParam("checkoutId") Long checkoutId,@RequestParam("payment") String payment){
+        checkoutService.modifyPaymentMethod(checkoutId, payment);
+        return new ResponseEntity<ApiResponse>(new ApiResponse(true,"Payment method set for customer from checkout"), HttpStatus.OK);
     }
 
 

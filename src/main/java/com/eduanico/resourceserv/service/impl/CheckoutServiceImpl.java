@@ -98,29 +98,52 @@ public class CheckoutServiceImpl implements CheckoutService {
         Product product = productRepository.findByName(productName);
         int index = checkout.getProductList().indexOf(product);
         checkout.getProductList().remove(index);
-        if(checkout.getProductList().size()==0){
+        if(checkout.getProductList().isEmpty()){
             checkoutRepository.delete(checkout);
         }
+        setTotalPrice(checkout);
     }
 
     @Override
     public void setAddressForCustomer(Long checkoutId, String address) {
-
+        Checkout checkout = checkoutRepository.getById(checkoutId);
+        if(checkout.getAddress().isEmpty()){
+            checkout.getAddress().add(address);
+        }else{
+            System.err.println("Address already set. Use modify instead");
+        }
     }
 
     @Override
     public void modifyAddressForCustomer(Long checkoutId, String address) {
-
+        Checkout checkout = checkoutRepository.getById(checkoutId);
+        if(checkout.getAddress().isEmpty()){
+            System.err.println("Address not set. Use set instead");
+        }else{
+            checkout.getAddress().remove(0);
+            checkout.getAddress().add(address);
+        }
     }
 
     @Override
     public void setPaymentMethod(Long checkoutId, String paymentMethod) {
-
+        Checkout checkout = checkoutRepository.getById(checkoutId);
+        if(checkout.getPaymentMethod().isEmpty()){
+            checkout.getPaymentMethod().add(paymentMethod);
+        }else{
+            System.err.println("Payment already set. Use modify instead");
+        }
     }
 
     @Override
     public void modifyPaymentMethod(Long checkoutId, String paymentMethod) {
-
+        Checkout checkout = checkoutRepository.getById(checkoutId);
+        if(checkout.getPaymentMethod().isEmpty()){
+            System.err.println("Payment not set. Use set instead");
+        }else{
+            checkout.getPaymentMethod().remove(0);
+            checkout.getPaymentMethod().add(paymentMethod);
+        }
     }
 
 
