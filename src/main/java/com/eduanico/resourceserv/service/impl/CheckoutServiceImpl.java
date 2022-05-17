@@ -94,7 +94,13 @@ public class CheckoutServiceImpl implements CheckoutService {
 
     @Override
     public void removeProductFromOrder(Long checkoutId, String productName) {
-
+        Checkout checkout = checkoutRepository.getById(checkoutId);
+        Product product = productRepository.findByName(productName);
+        int index = checkout.getProductList().indexOf(product);
+        checkout.getProductList().remove(index);
+        if(checkout.getProductList().size()==0){
+            checkoutRepository.delete(checkout);
+        }
     }
 
     @Override

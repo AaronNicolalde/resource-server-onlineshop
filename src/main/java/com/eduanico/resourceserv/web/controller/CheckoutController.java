@@ -47,10 +47,11 @@ public class CheckoutController {
         return new ResponseEntity<ApiResponse>(new ApiResponse(true,"Product added to checkout"), HttpStatus.CREATED);
     }
 
-    
-
-
-
+    @PostMapping("/delete-product")
+    public ResponseEntity<ApiResponse> deleteProductFromCheckout(@RequestParam("checkoutId") Long checkoutId,@RequestParam("productName") String productName){
+        checkoutService.removeProductFromOrder(checkoutId, productName);
+        return new ResponseEntity<ApiResponse>(new ApiResponse(true,"Product removed from checkout"), HttpStatus.CREATED);
+    }
 
 
 }
