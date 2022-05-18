@@ -1,27 +1,28 @@
 package com.eduanico.resourceserv.web.model;
 
-import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "users")
+@Table(name="order")
 @Getter
 @Setter
 @NoArgsConstructor
-public class Customer {
+public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long customerId;
+    private Long orderId;
 
-    @NotNull
-    private String username;
+    @OneToOne
+    private Checkout checkout;
 
-    public Customer(String username) {
-        this.username = username;
-    }
+    @Autowired
+    private Delivery delivery;
+
+
 }

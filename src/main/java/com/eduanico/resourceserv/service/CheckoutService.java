@@ -22,5 +22,4 @@ public interface CheckoutService {
     void modifyPaymentMethod(Long checkoutId, String paymentMethod);
 
     Optional<Checkout> getCheckoutInformation(Long checkoutId);
-
 }
