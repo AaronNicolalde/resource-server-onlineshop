@@ -3,6 +3,7 @@ package com.eduanico.resourceserv.service;
 import com.eduanico.resourceserv.web.model.Checkout;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CheckoutService {
 
@@ -20,6 +21,6 @@ public interface CheckoutService {
     void setPaymentMethod(Long checkoutId, String paymentMethod);
     void modifyPaymentMethod(Long checkoutId, String paymentMethod);
 
-    Checkout getCheckoutInformation(Long checkoutId);
+    Optional<Checkout> getCheckoutInformation(Long checkoutId);
 
 }
