@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/checkouts")
@@ -30,12 +29,12 @@ public class CheckoutController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Optional<Checkout>> getCheckoutInformation(@PathVariable("id") Long checkoutId) {
-            Optional<Checkout> body = checkoutService.getCheckoutInformation(checkoutId);
-            return new ResponseEntity<Optional<Checkout>>(body, HttpStatus.OK);
-
-
+    public ResponseEntity<Checkout> getCheckoutInformation(@PathVariable("id") Long checkoutId) {
+        Checkout body = checkoutService.getCheckoutInformation(checkoutId);
+        return new ResponseEntity<Checkout> (body, HttpStatus.OK);
     }
+
+
 
     @GetMapping
     public ResponseEntity<List<Checkout>> getCheckouts() {

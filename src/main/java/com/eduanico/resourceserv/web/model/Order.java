@@ -6,9 +6,12 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import java.util.List;
 
 @Entity
-@Table(name="order")
+@Table(name="orders")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,11 +21,26 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
 
-    @OneToOne
-    private Checkout checkout;
+    @Positive
+    private Long customerId;
+
+    @NotNull
+    private String customerName;
 
     @Autowired
+    @OneToMany(fetch=FetchType.EAGER)
+    private List<Product> productList;
+
+    @Autowired
+    @OneToOne(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
     private Delivery delivery;
 
+
+    public Order(Long customerId, String customerName, List<Product> productList, Delivery delivery) {
+        this.customerId = customerId;
+        this.customerName = customerName;
+        this.productList = productList;
+        this.delivery = delivery;
+    }
 
 }

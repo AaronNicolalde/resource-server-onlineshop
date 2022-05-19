@@ -1,10 +1,10 @@
 package com.eduanico.resourceserv.repository;
 
-import com.eduanico.resourceserv.web.model.Product;
+import com.eduanico.resourceserv.web.model.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface OrderRepository extends JpaRepository<Product, Long> {
+public interface OrderRepository extends JpaRepository<Order, Long> {
 
 }

@@ -21,5 +21,5 @@ public interface CheckoutService {
     void setPaymentMethod(Long checkoutId, String paymentMethod);
     void modifyPaymentMethod(Long checkoutId, String paymentMethod);
 
-    Optional<Checkout> getCheckoutInformation(Long checkoutId);
+    Checkout getCheckoutInformation(Long checkoutId);
 }

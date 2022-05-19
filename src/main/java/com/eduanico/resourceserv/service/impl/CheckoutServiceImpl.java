@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -34,8 +33,8 @@ public class CheckoutServiceImpl implements CheckoutService {
     }
 
     @Override
-    public Optional<Checkout> getCheckoutInformation(Long checkoutId) {
-        return checkoutRepository.findById(checkoutId);
+    public Checkout getCheckoutInformation(Long checkoutId) {
+        return checkoutRepository.findByCheckoutId(checkoutId);
     }
 
     @Override
