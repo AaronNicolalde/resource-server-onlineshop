@@ -21,11 +21,11 @@ public class Checkout {
     private Long checkoutId;
 
     @Autowired
-    @OneToOne
+    @OneToOne(cascade=CascadeType.ALL )
     private Customer customer;
 
     @Autowired
-    @OneToMany(fetch=FetchType.EAGER)
+    @OneToMany(fetch=FetchType.EAGER,cascade=CascadeType.ALL )
     private List<Product> productList = new ArrayList<>();
 
     @PositiveOrZero
@@ -42,5 +42,14 @@ public class Checkout {
         this.total = total;
         this.address = new ArrayList<>();
         this.paymentMethod = new ArrayList<>();
+    }
+
+    public Checkout(Long checkoutId, Customer customer, List<Product> productList, double total, ArrayList<String> address, ArrayList<String> paymentMethod) {
+        this.checkoutId = checkoutId;
+        this.customer = customer;
+        this.productList = productList;
+        this.total = total;
+        this.address = address;
+        this.paymentMethod = paymentMethod;
     }
 }

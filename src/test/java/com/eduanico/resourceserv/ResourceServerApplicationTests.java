@@ -10,4 +10,9 @@ class ResourceServerApplicationTests {
 	void contextLoads() {
 	}
 
+	@Test
+	public void main() {
+		ResourceServerApplication.main(new String[] {});
+	}
+
 }

@@ -25,7 +25,7 @@ public class ProductController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<ApiResponse> addProduct(@RequestBody Product product){
+    public ResponseEntity<ApiResponse> addProduct(@RequestBody @Valid Product product){
         productService.addProduct(product);
         return new ResponseEntity<ApiResponse>(new ApiResponse(true,"Product added"),HttpStatus.CREATED);
     }

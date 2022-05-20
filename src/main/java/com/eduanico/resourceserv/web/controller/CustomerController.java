@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -23,7 +24,7 @@ public class CustomerController {
     CustomerService customerService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse> addCustomer(@RequestBody Customer c){
+    public ResponseEntity<ApiResponse> addCustomer(@RequestBody @Valid Customer c){
         customerService.createCustomer(c);
         return new ResponseEntity<ApiResponse>(new ApiResponse(true,"Customer created"), HttpStatus.CREATED);
     }

@@ -70,6 +70,7 @@ public class CheckoutServiceImpl implements CheckoutService {
         System.err.println("Product or checkout not found");
     }
 
+    @Override
     public void setTotalPrice(Checkout checkout){
         double total = 0;
         for(Product p : checkout.getProductList()){

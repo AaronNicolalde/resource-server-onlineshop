@@ -6,9 +6,12 @@ import com.eduanico.resourceserv.web.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
+@Transactional
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
@@ -26,11 +29,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product updateExistingProduct(Long id, Product p) {
+    public Product updateExistingProduct(Long id, Product p) throws EntityNotFoundException{
         Product product = productRepository.getById(id);
-        product.setPrice(p.getPrice());
-        product.setQuantity(p.getQuantity());
-        return product;
+        if(product != null && product.getName().equals(p.getName())){
+            product.setPrice(p.getPrice());
+            product.setQuantity(p.getQuantity());
+            return product;
+        }
+        throw new EntityNotFoundException();
     }
 
     @Override
@@ -38,21 +44,5 @@ public class ProductServiceImpl implements ProductService {
         productRepository.findById(id)
                 .ifPresent(product -> productRepository.delete(product));
     }
-
-
-//    public void updateProduct(Integer productID, ProductDto productDto, Category category) {
-//        Product product = getProductFromDto(productDto, category);
-//        product.setId(productID);
-//        productRepository.save(product);
-//    }
-//
-//
-//    public Product getProductById(Integer productId) throws ProductNotExistException {
-//        Optional<Product> optionalProduct = productRepository.findById(productId);
-//        if (!optionalProduct.isPresent())
-//            throw new ProductNotExistException("Product id is invalid " + productId);
-//        return optionalProduct.get();
-//    }
-
 
 }
