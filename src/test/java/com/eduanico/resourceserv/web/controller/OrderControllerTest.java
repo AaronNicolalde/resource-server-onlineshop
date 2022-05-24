@@ -24,8 +24,7 @@ class OrderControllerTest {
     @Test
     @DisplayName("Add customer returns api response when successful")
     void addCustomer_WhenSuccessful() {
-        assertThat(orderController.addCustomer(1L)).isInstanceOf(ResponseEntity.class);
-
+        assertThat(orderController.addOrder(1L)).isInstanceOf(ResponseEntity.class);
     }
 
     @Test

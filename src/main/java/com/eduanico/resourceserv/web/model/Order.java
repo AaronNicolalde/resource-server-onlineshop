@@ -22,7 +22,7 @@ public class Order {
     private Long orderId;
 
     @Positive
-    private Long customerId;
+    private Long checkoutId;
 
     @NotNull
     private String customerName;
@@ -36,8 +36,8 @@ public class Order {
     private Delivery delivery;
 
 
-    public Order(Long customerId, String customerName, List<Product> productList, Delivery delivery) {
-        this.customerId = customerId;
+    public Order(Long checkoutId, String customerName, List<Product> productList, Delivery delivery) {
+        this.checkoutId = checkoutId;
         this.customerName = customerName;
         this.productList = productList;
         this.delivery = delivery;

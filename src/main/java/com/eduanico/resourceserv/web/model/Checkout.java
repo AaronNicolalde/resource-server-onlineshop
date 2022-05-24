@@ -18,11 +18,10 @@ public class Checkout {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(insertable = false , updatable = false)
     private Long checkoutId;
 
-    @Autowired
-    @OneToOne(cascade=CascadeType.ALL )
-    private Customer customer;
+    private String username;
 
     @Autowired
     @OneToMany(fetch=FetchType.EAGER,cascade=CascadeType.ALL )
@@ -31,25 +30,25 @@ public class Checkout {
     @PositiveOrZero
     private double total;
 
-    private ArrayList<String> address;
+    @Embedded
+    private Address deliveryAddress;
 
-    private ArrayList<String> paymentMethod;
+    @Embedded
+    private PaymentMethod paymentMethodSelected;
 
 
-    public Checkout(Customer customer, List<Product> productList, double total) {
-        this.customer = customer;
+    public Checkout(String username, List<Product> productList, double total) {
+        this.username = username;
         this.productList = productList;
         this.total = total;
-        this.address = new ArrayList<>();
-        this.paymentMethod = new ArrayList<>();
     }
 
-    public Checkout(Long checkoutId, Customer customer, List<Product> productList, double total, ArrayList<String> address, ArrayList<String> paymentMethod) {
+    public Checkout(Long checkoutId, String username, List<Product> productList, double total, Address deliveryAddress, PaymentMethod paymentMethodSelected) {
         this.checkoutId = checkoutId;
-        this.customer = customer;
+        this.username = username;
         this.productList = productList;
         this.total = total;
-        this.address = address;
-        this.paymentMethod = paymentMethod;
+        this.deliveryAddress = deliveryAddress;
+        this.paymentMethodSelected = paymentMethodSelected;
     }
 }

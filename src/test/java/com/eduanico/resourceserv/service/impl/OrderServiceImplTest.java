@@ -2,10 +2,8 @@ package com.eduanico.resourceserv.service.impl;
 
 import com.eduanico.resourceserv.repository.CheckoutRepository;
 import com.eduanico.resourceserv.service.OrderService;
-import com.eduanico.resourceserv.web.model.Checkout;
-import com.eduanico.resourceserv.web.model.Customer;
+import com.eduanico.resourceserv.web.model.*;
 import com.eduanico.resourceserv.web.model.Order;
-import com.eduanico.resourceserv.web.model.Product;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,15 +57,15 @@ class OrderServiceImplTest {
     }
 
     Checkout createCheckout(){
-        Customer customer = new Customer("eduanico");
+        Customer customer = new Customer("eduanico@test.com");
+        customer.getAddress().add(new Address("address1"));
+        customer.getAddress().add(new Address("address2"));
+        customer.getPaymentMethod().add(new PaymentMethod("credit card"));
+        customer.getPaymentMethod().add(new PaymentMethod("debit card"));
         Product p = new Product("apple",10.0,0.35);
         List<Product> productList = new ArrayList<Product>();
         productList.add(p);
-        ArrayList<String> addressList = new ArrayList<String>();
-        addressList.add("urb test");
-        ArrayList<String> paymentList = new ArrayList<String>();
-        paymentList.add("credit card");
-        checkout = new Checkout(1L,customer,productList,10.0,addressList,paymentList);
+        checkout = new Checkout(1L,"eduanico@test.com",productList,10.0,new Address("address1"),new PaymentMethod("credit card"));
         return checkout;
     }
 

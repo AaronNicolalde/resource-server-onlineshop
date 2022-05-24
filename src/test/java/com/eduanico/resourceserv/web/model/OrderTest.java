@@ -14,13 +14,13 @@ class OrderTest {
     void testOrder(){
         order = new Order(1L,"eduanico",new ArrayList<>(),new Delivery());
         order.setOrderId(1L);
-        order.setCustomerId(1L);
+        order.setCheckoutId(1L);
         order.setDelivery(new Delivery());
         order.setProductList(new ArrayList<>());
         order.setCustomerName("eduanico");
         order.getOrderId();
         order.getCustomerName();
-        order.getCustomerId();
+        order.getCheckoutId();
         order.getDelivery();
         order.getProductList();
     }

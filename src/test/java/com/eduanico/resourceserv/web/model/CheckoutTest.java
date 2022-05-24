@@ -10,7 +10,7 @@ class CheckoutTest {
 
     @Test
     void testCheckout(){
-        Checkout checkout = new Checkout(new Customer(), new ArrayList<>(),10.0);
+        Checkout checkout = new Checkout("eduanico", new ArrayList<>(),10.0);
     }
 
 }

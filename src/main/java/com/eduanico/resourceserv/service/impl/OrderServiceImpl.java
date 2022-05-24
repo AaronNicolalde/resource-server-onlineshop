@@ -18,17 +18,16 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     OrderRepository orderRepository;
 
+
     public Order createOrder(Long checkoutId){
         Checkout checkout = checkoutRepository.findByCheckoutId(checkoutId);
         if(checkout!=null){
-            String address = checkout.getAddress().get(0);
-            String payment = checkout.getPaymentMethod().get(0);
+            Address address = checkout.getDeliveryAddress();
+            PaymentMethod payment = checkout.getPaymentMethodSelected();
             double total = checkout.getTotal();
-            Customer customer = checkout.getCustomer();
             List<Product> productList = checkout.getProductList();
-            Long customerId = customer.getCustomerId();
-            String customerName = customer.getUsername();
-            Order order = new Order(customerId, customerName, productList, new Delivery(address,payment, total));
+            String customerName = checkout.getUsername();
+            Order order = new Order(checkoutId, customerName, productList, new Delivery(address.getAddress(),payment.getPaymentMethod(), total));
             return orderRepository.save(order);
         }
         return null;

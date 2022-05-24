@@ -12,37 +12,37 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Api Response Tests")
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-class ApiResponseTest {
+class ApiResponseCustomTest {
 
     @Autowired
-    private ApiResponse apiResponse;
+    private ApiResponseCustom apiResponseCustom;
 
 
     @Test
     @DisplayName("Api response success is true when response successfully")
     void isSuccess_ReturnTrue_WhenSuccess() {
-        apiResponse = new ApiResponse(true, "Success");
-        assertThat(apiResponse.isSuccess()).isTrue();
+        apiResponseCustom = new ApiResponseCustom(true, "Success");
+        assertThat(apiResponseCustom.isSuccess()).isTrue();
     }
 
     @Test
     @DisplayName("Api response success is false when response failed")
     void isSuccess_ReturnFalse_WhenFail() {
-        apiResponse = new ApiResponse(false, "Fail");
-        assertThat(apiResponse.isSuccess()).isFalse();
+        apiResponseCustom = new ApiResponseCustom(false, "Fail");
+        assertThat(apiResponseCustom.isSuccess()).isFalse();
     }
 
     @Test
     @DisplayName("Return message of the api responde when successful")
     void getMessage_ReturnMessage() {
-        apiResponse = new ApiResponse(true, "Success");
-        assertThat(apiResponse.getMessage()).isEqualTo("Success");
+        apiResponseCustom = new ApiResponseCustom(true, "Success");
+        assertThat(apiResponseCustom.getMessage()).isEqualTo("Success");
     }
 
     @Test
     @DisplayName("Return Timestamp of the api responde when successful")
     void getTimestamp_ReturnTimestamp() {
-        apiResponse = new ApiResponse(true, "Success");
-        assertThat(apiResponse.getTimestamp()).isLessThanOrEqualTo(LocalDateTime.now().toString());
+        apiResponseCustom = new ApiResponseCustom(true, "Success");
+        assertThat(apiResponseCustom.getTimestamp()).isLessThanOrEqualTo(LocalDateTime.now().toString());
     }
 }

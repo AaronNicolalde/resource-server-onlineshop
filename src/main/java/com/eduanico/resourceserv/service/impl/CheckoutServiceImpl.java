@@ -4,9 +4,7 @@ import com.eduanico.resourceserv.repository.CheckoutRepository;
 import com.eduanico.resourceserv.repository.CustomerRepository;
 import com.eduanico.resourceserv.repository.ProductRepository;
 import com.eduanico.resourceserv.service.CheckoutService;
-import com.eduanico.resourceserv.web.model.Checkout;
-import com.eduanico.resourceserv.web.model.Customer;
-import com.eduanico.resourceserv.web.model.Product;
+import com.eduanico.resourceserv.web.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,15 +36,14 @@ public class CheckoutServiceImpl implements CheckoutService {
     }
 
     @Override
-    public Checkout startCheckout(Long customerId, String productName, double quantity) {
-        if(customerRepository.getById(customerId) != null && productRepository.findByName(productName) != null){
-            Customer customer = customerRepository.getById(customerId);
-            Product product = productRepository.findByName(productName);
+    public Checkout startCheckout(String username, String productName, double quantity) {
+        Product product = productRepository.findByName(productName);
+        Customer customer = customerRepository.findByUsername(username);
+        if( customer != null && product != null){
             List<Product> productList = new ArrayList<>();
             product.setQuantity(quantity);
             productList.add(product);
-
-            return checkoutRepository.save(new Checkout(customer, productList, product.getPrice() * quantity));
+            return checkoutRepository.save(new Checkout(username, productList, product.getPrice() * quantity));
         }
         return null;
     }
@@ -94,7 +91,7 @@ public class CheckoutServiceImpl implements CheckoutService {
     }
 
     @Override
-    public void removeProductFromOrder(Long checkoutId, String productName) {
+    public void removeProductFromCheckout(Long checkoutId, String productName) {
         Checkout checkout = checkoutRepository.getById(checkoutId);
         Product product = productRepository.findByName(productName);
         int index = checkout.getProductList().indexOf(product);
@@ -106,44 +103,58 @@ public class CheckoutServiceImpl implements CheckoutService {
     }
 
     @Override
-    public void setAddressForCustomer(Long checkoutId, String address) {
+    public void setAddressForDelivery(Long checkoutId, int addressIndex) throws IndexOutOfBoundsException {
         Checkout checkout = checkoutRepository.getById(checkoutId);
-        if(checkout.getAddress().isEmpty()){
-            checkout.getAddress().add(address);
+        if(checkout.getDeliveryAddress() == null){
+            Customer customer = customerRepository.findByUsername(checkout.getUsername());
+            if(customer != null){
+                Address address = customer.getAddress().get(addressIndex);
+                checkout.setDeliveryAddress(address);
+            }
         }else{
             System.err.println("Address already set. Use modify instead");
         }
     }
 
     @Override
-    public void modifyAddressForCustomer(Long checkoutId, String address) {
+    public void modifyAddressForDelivery(Long checkoutId, int addressIndex) throws IndexOutOfBoundsException{
         Checkout checkout = checkoutRepository.getById(checkoutId);
-        if(checkout.getAddress().isEmpty()){
+        if(checkout.getDeliveryAddress() == null ){
             System.err.println("Address not set. Use set instead");
         }else{
-            checkout.getAddress().remove(0);
-            checkout.getAddress().add(address);
+            Customer customer = customerRepository.findByUsername(checkout.getUsername());
+            if(customer != null) {
+                Address address = customer.getAddress().get(addressIndex);
+                checkout.setDeliveryAddress(address);
+            }
         }
     }
 
     @Override
-    public void setPaymentMethod(Long checkoutId, String paymentMethod) {
+    public void setPaymentMethod(Long checkoutId, int paymentMethodIndex) throws IndexOutOfBoundsException{
         Checkout checkout = checkoutRepository.getById(checkoutId);
-        if(checkout.getPaymentMethod().isEmpty()){
-            checkout.getPaymentMethod().add(paymentMethod);
+        if(checkout.getPaymentMethodSelected() == null){
+            Customer customer = customerRepository.findByUsername(checkout.getUsername());
+            if(customer != null) {
+                PaymentMethod paymentMethod = customer.getPaymentMethod().get(paymentMethodIndex);
+                checkout.setPaymentMethodSelected(paymentMethod);
+            }
         }else{
             System.err.println("Payment already set. Use modify instead");
         }
     }
 
     @Override
-    public void modifyPaymentMethod(Long checkoutId, String paymentMethod) {
+    public void modifyPaymentMethod(Long checkoutId, int paymentMethodIndex) throws IndexOutOfBoundsException{
         Checkout checkout = checkoutRepository.getById(checkoutId);
-        if(checkout.getPaymentMethod().isEmpty()){
+        if(checkout.getPaymentMethodSelected() == null){
             System.err.println("Payment not set. Use set instead");
         }else{
-            checkout.getPaymentMethod().remove(0);
-            checkout.getPaymentMethod().add(paymentMethod);
+            Customer customer = customerRepository.findByUsername(checkout.getUsername());
+            if(customer != null) {
+                PaymentMethod paymentMethod = customer.getPaymentMethod().get(paymentMethodIndex);
+                checkout.setPaymentMethodSelected(paymentMethod);
+            }
         }
     }
 
