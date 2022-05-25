@@ -1,25 +1,32 @@
 package com.eduanico.resourceserv.service.impl;
 
-import com.eduanico.resourceserv.service.CustomerService;
+import com.eduanico.resourceserv.repository.CustomerRepository;
 import com.eduanico.resourceserv.web.model.Customer;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest
+@RunWith(MockitoJUnitRunner.class)
 @DisplayName("Customer service Tests")
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class CustomerServiceImplTest {
 
-    @Autowired
-    CustomerService customerService;
+    @InjectMocks
+    CustomerServiceImpl customerService;
+
+    @Mock
+    CustomerRepository customerRepository;
 
     private Customer customer;
 
@@ -29,18 +36,28 @@ class CustomerServiceImplTest {
     }
 
     @Test
+    @DisplayName("Create a customer return null when customer already exists")
+    void createCustomer_ReturnNull_WhenCustomerExists(){
+        when(customerRepository.findByUsername(any(String.class))).thenReturn(customer);
+
+        assertThat(customerService.createCustomer(customer)).isEqualTo(null);
+    }
+
+    @Test
     @DisplayName("Create a customer when successful")
     void createCustomer_ReturnCustomer_WhenSuccessful(){
-        Customer newCustomer = customerService.createCustomer(customer);
-        assertThat(newCustomer.getUsername()).isEqualTo("eduanico");
+        when(customerRepository.findByUsername(any(String.class))).thenReturn(null);
+        when(customerRepository.save(any(Customer.class))).thenReturn(customer);
+
+        assertThat(customerService.createCustomer(customer)).isEqualTo(customer);
     }
 
     @Test
     @DisplayName("List all customers when successful")
     void listCustomers_ReturnListOfCustomers_WhenSuccessful(){
-        customerService.createCustomer(customer);
-        List<Customer> newCustomer = customerService.listCustomers();
-        assertThat(newCustomer.size()).isEqualTo(1);
+        when(customerRepository.findAll()).thenReturn(new ArrayList<>());
+
+        assertThat(customerService.listCustomers()).isInstanceOf(ArrayList.class);
     }
 
 

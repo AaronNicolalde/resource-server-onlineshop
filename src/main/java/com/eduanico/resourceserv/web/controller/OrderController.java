@@ -31,8 +31,10 @@ public class OrderController {
     })
     @PostMapping
     public ResponseEntity<ApiResponseCustom> addOrder(@RequestParam("checkoutId") Long checkoutId){
-        orderService.createOrder(checkoutId);
-        return new ResponseEntity<ApiResponseCustom>(new ApiResponseCustom(true,"Order created"), HttpStatus.CREATED);
+        if(orderService.createOrder(checkoutId) != null){
+            return new ResponseEntity<ApiResponseCustom>(new ApiResponseCustom(true,"Order created"), HttpStatus.CREATED);
+        }
+        return new ResponseEntity<ApiResponseCustom>(new ApiResponseCustom(false,"Order not created"), HttpStatus.BAD_REQUEST);
     }
 
     @Operation(summary = "To fetch all orders in database")

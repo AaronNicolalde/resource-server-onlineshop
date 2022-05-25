@@ -3,30 +3,32 @@ package com.eduanico.resourceserv.service.impl;
 import com.eduanico.resourceserv.repository.ProductRepository;
 import com.eduanico.resourceserv.service.ProductService;
 import com.eduanico.resourceserv.web.model.Product;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest
+@RunWith(MockitoJUnitRunner.class)
 @DisplayName("Product service Tests")
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class ProductServiceImplTest {
 
-    @Autowired
+    @InjectMocks
     ProductServiceImpl productService;
 
-    @Autowired
+    @Mock
     ProductRepository productRepository;
 
     private
@@ -42,15 +44,20 @@ class ProductServiceImplTest {
     void listProducts_ReturnsList_WhenSuccesful() {
         ProductService mock = mock(ProductService.class);
         List<Product> products = productService.listProducts();
+
         when(mock.listProducts()).thenReturn(products);
-        assertThat(products).isInstanceOf(List.class);
+
+        assertThat(productService.listProducts()).isInstanceOf(List.class);
     }
 
     @Test
     @DisplayName("Add product method save product when successful")
     void addProduct_SaveProduct_WhenSuccessful() {
+        when(productRepository.save(any(Product.class))).thenReturn(new Product());
+
         productService.addProduct(product);
-        productRepository.deleteById(product.getProductId());
+
+        verify(productRepository, times(1)).save(product);
     }
 
     @Test
@@ -58,8 +65,8 @@ class ProductServiceImplTest {
     void updateExistingProduct_UpdateProduct_WhenSuccessful() {
         Product updateProduct = createProduct();
         updateProduct.setQuantity(14);
-        productRepository.save(product);
-        productService.addProduct(product);
+
+        when(productRepository.getById(any(Long.class))).thenReturn(product);
 
         Product newProduct = productService.updateExistingProduct(1L, updateProduct);
 
@@ -67,18 +74,26 @@ class ProductServiceImplTest {
     }
 
     @Test
-    @DisplayName("Update existing product return EntityNotFoundException when fail")
-    void updateExistingProduct_ReturnEntityNotFoundException_WhenFail() {
-        Assertions.assertThatExceptionOfType(EntityNotFoundException.class)
-                .isThrownBy(()-> productService.updateExistingProduct(5L, product));
+    @DisplayName("Update existing product throws EntityNotFoundException when failed")
+    void updateExistingProduct_ThrowException_WhenFailed() {
+        Product updateProduct = createProduct();
+        updateProduct.setQuantity(14);
+        when(productRepository.getById(any(Long.class)))
+                .thenReturn(null);
+
+        assertThrows(EntityNotFoundException.class,
+                ()->{
+                    productService.updateExistingProduct(2L, updateProduct);
+                });
     }
 
     @Test
     @DisplayName("Delete product when successful")
     void deleteProduct_WhenSuccessful() {
-        productService.addProduct(product);
         productService.deleteProduct(2L);
-        assertThat(productRepository.count()).isEqualTo(3);
+
+        assertThat(productRepository.findById(2L)).isInstanceOf(Optional.class).isEmpty();
+
     }
 
     Product createProduct(){

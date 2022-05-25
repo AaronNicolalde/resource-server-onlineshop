@@ -35,7 +35,7 @@ public class CustomerController {
     })
     @PostMapping
     public ResponseEntity<ApiResponseCustom> addCustomer(Principal principal){
-        String username = principal.getName().toString();
+        String username = principal.getName();
 
         if(customerService.createCustomer(new Customer(username)) != null){
             return new ResponseEntity<ApiResponseCustom>(new ApiResponseCustom(true,"Customer created"), HttpStatus.CREATED);

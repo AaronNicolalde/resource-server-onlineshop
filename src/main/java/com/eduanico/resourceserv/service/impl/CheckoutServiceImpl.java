@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Positive;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,12 +34,15 @@ public class CheckoutServiceImpl implements CheckoutService {
     }
 
     @Override
-    public Checkout getCheckoutInformation(Long checkoutId) {
+    public Checkout getCheckoutInformation(@Positive Long checkoutId) {
+        if(checkoutRepository.findByCheckoutId(checkoutId) == null){
+            return null;
+        }
         return checkoutRepository.findByCheckoutId(checkoutId);
     }
 
     @Override
-    public Checkout startCheckout(String username, String productName, double quantity) {
+    public Checkout startCheckout(@NotEmpty String username,@NotEmpty String productName, @Positive double quantity) {
         Product product = productRepository.findByName(productName);
         Customer customer = customerRepository.findByUsername(username);
         if( customer != null && product != null){
@@ -49,7 +55,7 @@ public class CheckoutServiceImpl implements CheckoutService {
     }
 
     @Override
-    public void addProductToCheckout(Long checkoutId, String productName, double quantity) {
+    public void addProductToCheckout(@Positive Long checkoutId,@NotEmpty String productName, @Positive double quantity) {
         Checkout checkout = checkoutRepository.getById(checkoutId);
         Product product = productRepository.findByName(productName);
         if(checkout!= null && product != null){
@@ -68,7 +74,7 @@ public class CheckoutServiceImpl implements CheckoutService {
     }
 
     @Override
-    public void setTotalPrice(Checkout checkout){
+    public void setTotalPrice(@Valid Checkout checkout){
         double total = 0;
         for(Product p : checkout.getProductList()){
             total+= p.getPrice()*p.getQuantity();
@@ -77,7 +83,7 @@ public class CheckoutServiceImpl implements CheckoutService {
     }
 
     @Override
-    public void modifiyProductQuantity(Long checkoutId, String productName, double quantity) {
+    public void modifiyProductQuantity(@Positive Long checkoutId, @NotEmpty String productName, @Positive double quantity) {
         Checkout checkout = checkoutRepository.getById(checkoutId);
         Product product = productRepository.findByName(productName);
         if(checkout!= null && product != null){
@@ -91,19 +97,21 @@ public class CheckoutServiceImpl implements CheckoutService {
     }
 
     @Override
-    public void removeProductFromCheckout(Long checkoutId, String productName) {
+    public void removeProductFromCheckout(@Positive Long checkoutId, @NotEmpty String productName) {
         Checkout checkout = checkoutRepository.getById(checkoutId);
         Product product = productRepository.findByName(productName);
-        int index = checkout.getProductList().indexOf(product);
-        checkout.getProductList().remove(index);
-        if(checkout.getProductList().isEmpty()){
-            checkoutRepository.delete(checkout);
+        if(checkout!= null && product != null && checkout.getProductList().contains(product)){
+            int index = checkout.getProductList().indexOf(product);
+            checkout.getProductList().remove(index);
+            if(checkout.getProductList().isEmpty()){
+                checkoutRepository.delete(checkout);
+            }
         }
         setTotalPrice(checkout);
     }
 
     @Override
-    public void setAddressForDelivery(Long checkoutId, int addressIndex) throws IndexOutOfBoundsException {
+    public void setAddressForDelivery(@Positive Long checkoutId,@Positive  int addressIndex) throws IndexOutOfBoundsException {
         Checkout checkout = checkoutRepository.getById(checkoutId);
         if(checkout.getDeliveryAddress() == null){
             Customer customer = customerRepository.findByUsername(checkout.getUsername());
@@ -117,7 +125,7 @@ public class CheckoutServiceImpl implements CheckoutService {
     }
 
     @Override
-    public void modifyAddressForDelivery(Long checkoutId, int addressIndex) throws IndexOutOfBoundsException{
+    public void modifyAddressForDelivery(@Positive Long checkoutId,@Positive int addressIndex) throws IndexOutOfBoundsException{
         Checkout checkout = checkoutRepository.getById(checkoutId);
         if(checkout.getDeliveryAddress() == null ){
             System.err.println("Address not set. Use set instead");
@@ -131,7 +139,7 @@ public class CheckoutServiceImpl implements CheckoutService {
     }
 
     @Override
-    public void setPaymentMethod(Long checkoutId, int paymentMethodIndex) throws IndexOutOfBoundsException{
+    public void setPaymentMethod(@Positive Long checkoutId,@Positive  int paymentMethodIndex) throws IndexOutOfBoundsException{
         Checkout checkout = checkoutRepository.getById(checkoutId);
         if(checkout.getPaymentMethodSelected() == null){
             Customer customer = customerRepository.findByUsername(checkout.getUsername());
@@ -145,7 +153,7 @@ public class CheckoutServiceImpl implements CheckoutService {
     }
 
     @Override
-    public void modifyPaymentMethod(Long checkoutId, int paymentMethodIndex) throws IndexOutOfBoundsException{
+    public void modifyPaymentMethod(@Positive Long checkoutId,@Positive int paymentMethodIndex) {
         Checkout checkout = checkoutRepository.getById(checkoutId);
         if(checkout.getPaymentMethodSelected() == null){
             System.err.println("Payment not set. Use set instead");

@@ -21,13 +21,12 @@ public class OrderServiceImpl implements OrderService {
 
     public Order createOrder(Long checkoutId){
         Checkout checkout = checkoutRepository.findByCheckoutId(checkoutId);
-        if(checkout!=null){
+        if(checkout !=null){
             Address address = checkout.getDeliveryAddress();
             PaymentMethod payment = checkout.getPaymentMethodSelected();
             double total = checkout.getTotal();
-            List<Product> productList = checkout.getProductList();
             String customerName = checkout.getUsername();
-            Order order = new Order(checkoutId, customerName, productList, new Delivery(address.getAddress(),payment.getPaymentMethod(), total));
+            Order order = new Order(checkoutId, customerName, checkout.getProductList(), new Delivery(address.getAddress(),payment.getPaymentMethod(), total));
             return orderRepository.save(order);
         }
         return null;

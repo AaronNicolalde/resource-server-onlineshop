@@ -1,59 +1,70 @@
 package com.eduanico.resourceserv.service.impl;
 
 import com.eduanico.resourceserv.repository.CheckoutRepository;
-import com.eduanico.resourceserv.service.OrderService;
-import com.eduanico.resourceserv.web.model.*;
+import com.eduanico.resourceserv.repository.OrderRepository;
 import com.eduanico.resourceserv.web.model.Order;
+import com.eduanico.resourceserv.web.model.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest
+@RunWith(MockitoJUnitRunner.class)
 @DisplayName("Order service Tests")
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class OrderServiceImplTest {
 
-    @Autowired
-    OrderService orderService;
+    @InjectMocks
+    OrderServiceImpl orderService;
 
-    @Autowired
+    @Mock
+    OrderRepository orderRepository;
+
+    @Mock
     CheckoutRepository checkoutRepository;
 
     private Checkout checkout;
 
     @BeforeEach
     void setup(){
+        checkout = createCheckout();
     }
 
     @Test
     @DisplayName("Create order returns order when successful")
     void createOrder_ReturnOrder_WhenSuccessful() {
-        Checkout c = createCheckout();
-        checkoutRepository.save(c);
-        Order order = orderService.createOrder(c.getCheckoutId());
+        when(orderRepository.save(any(Order.class))).thenReturn(new Order());
+        when(checkoutRepository.findByCheckoutId(any(Long.class))).thenReturn(checkout);
 
-        assertThat(order.getCustomerName()).isEqualTo("eduanico");
-
+        assertThat(orderService.createOrder(checkout.getCheckoutId())).isInstanceOf(Order.class);
     }
 
     @Test
     @DisplayName("Create order returns null when failed")
     void createOrder_ReturnNull_WhenFail() {
+        when(orderRepository.save(any(Order.class))).thenReturn(new Order());
+        when(checkoutRepository.findByCheckoutId(any(Long.class))).thenReturn(null);
+
         assertThat(orderService.createOrder(2L)).isEqualTo(null);
     }
 
     @Test
     @DisplayName("Create order returns order when successful")
     void listOrders() {
-        assertThat(orderService.listOrders().size()).isEqualTo(1);
+        when(orderRepository.findAll()).thenReturn(new ArrayList<Order>());
+
+        assertThat(orderService.listOrders()).isInstanceOf(ArrayList.class);
     }
 
     Checkout createCheckout(){

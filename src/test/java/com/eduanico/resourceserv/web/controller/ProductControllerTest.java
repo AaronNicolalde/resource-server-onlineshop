@@ -35,12 +35,15 @@ class ProductControllerTest {
     @Test
     @DisplayName("Add product returns api response when successful")
     void addProduct_WhenSuccessful() {
-        assertThat(productController.addProduct(new Product("apple",10.0,0.35))).isInstanceOf(ResponseEntity.class);
+        assertThat(productController.addProduct(new Product("egg",10.0,0.35))).isInstanceOf(ResponseEntity.class);
     }
 
     @Test
     @DisplayName("Update product returns api response when successful")
     void updateProduct_WhenSuccessful() {
+//        when(productRepository.save(any(Product.class)))
+//                .thenReturn(new Product("apple",11.0,0.50));
+
         Product p = productRepository.save(new Product("apple",11.0,0.50));
         assertThat(productController.updateProduct(p.getProductId(), new Product("apple",10.0,0.35))).isInstanceOf(ResponseEntity.class);
 
