@@ -20,13 +20,13 @@ import java.util.List;
 @Transactional
 public class CheckoutServiceImpl implements CheckoutService {
     @Autowired
-    private CheckoutRepository checkoutRepository;
+    CheckoutRepository checkoutRepository;
 
     @Autowired
-    private ProductRepository productRepository;
+    ProductRepository productRepository;
 
     @Autowired
-    private CustomerRepository customerRepository;
+    CustomerRepository customerRepository;
 
     @Override
     public List<Checkout> listCheckouts() {
@@ -83,7 +83,7 @@ public class CheckoutServiceImpl implements CheckoutService {
     }
 
     @Override
-    public void modifiyProductQuantity(@Positive Long checkoutId, @NotEmpty String productName, @Positive double quantity) {
+    public void modifyProductQuantity(@Positive Long checkoutId, @NotEmpty String productName, @Positive double quantity) {
         Checkout checkout = checkoutRepository.getById(checkoutId);
         Product product = productRepository.findByName(productName);
         if(checkout!= null && product != null){

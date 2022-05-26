@@ -11,7 +11,7 @@ class ResourceServerApplicationTests {
 	}
 
 	@Test
-	public void main() {
+	void main() {
 		ResourceServerApplication.main(new String[] {});
 	}
 

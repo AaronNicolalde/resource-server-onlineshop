@@ -15,12 +15,11 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
-    private ProductRepository productRepository;
+    ProductRepository productRepository;
 
     @Override
     public List<Product> listProducts() {
-        List<Product> products = productRepository.findAll();
-        return products;
+        return productRepository.findAll();
     }
 
     @Override
@@ -33,7 +32,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product updateExistingProduct(Long id, Product p) throws EntityNotFoundException{
         Product product = productRepository.getById(id);
-        if(product != null && product.getName().equals(p.getName())){
+        if(product.getName().equals(p.getName())){
             product.setPrice(p.getPrice());
             product.setQuantity(p.getQuantity());
             return product;

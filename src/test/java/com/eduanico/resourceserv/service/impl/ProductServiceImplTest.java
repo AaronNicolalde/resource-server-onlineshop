@@ -11,7 +11,6 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,7 +40,7 @@ class ProductServiceImplTest {
 
     @Test
     @DisplayName("Returns list of products when successful")
-    void listProducts_ReturnsList_WhenSuccesful() {
+    void listProducts_ReturnsList_WhenSuccessful() {
         ProductService mock = mock(ProductService.class);
         List<Product> products = productService.listProducts();
 
@@ -74,17 +73,15 @@ class ProductServiceImplTest {
     }
 
     @Test
-    @DisplayName("Update existing product throws EntityNotFoundException when failed")
+    @DisplayName("Update existing product throws NullPointerException when failed")
     void updateExistingProduct_ThrowException_WhenFailed() {
         Product updateProduct = createProduct();
         updateProduct.setQuantity(14);
         when(productRepository.getById(any(Long.class)))
                 .thenReturn(null);
 
-        assertThrows(EntityNotFoundException.class,
-                ()->{
-                    productService.updateExistingProduct(2L, updateProduct);
-                });
+        assertThrows(NullPointerException.class,
+                ()-> productService.updateExistingProduct(2L, updateProduct));
     }
 
     @Test

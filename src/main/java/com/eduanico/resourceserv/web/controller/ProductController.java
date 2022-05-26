@@ -33,7 +33,7 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<List<Product>> getProducts() {
         List<Product> body = productService.listProducts();
-        return new ResponseEntity<List<Product>>(body, HttpStatus.OK);
+        return new ResponseEntity<>(body, HttpStatus.OK);
     }
 
 
@@ -47,7 +47,7 @@ public class ProductController {
     @PostMapping("/add")
     public ResponseEntity<ApiResponseCustom> addProduct(@RequestBody @Valid Product product){
         productService.addProduct(product);
-        return new ResponseEntity<ApiResponseCustom>(new ApiResponseCustom(true,"Product added"),HttpStatus.CREATED);
+        return new ResponseEntity<>(new ApiResponseCustom(true,"Product added"),HttpStatus.CREATED);
     }
 
 
@@ -61,7 +61,7 @@ public class ProductController {
     @PutMapping("/update/{id}")
     public ResponseEntity<ApiResponseCustom> updateProduct(@PathVariable("id") final Long id, @RequestBody @Valid Product product){
         productService.updateExistingProduct(id, product);
-        return new ResponseEntity<ApiResponseCustom>(new ApiResponseCustom(true,"Product updated"),HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponseCustom(true,"Product updated"),HttpStatus.OK);
     }
 
 
@@ -75,6 +75,6 @@ public class ProductController {
     @DeleteMapping(value = "delete/{id}")
     public ResponseEntity<ApiResponseCustom> delete(@PathVariable("id") final Long id) {
         productService.deleteProduct(id);
-        return new ResponseEntity<ApiResponseCustom>(new ApiResponseCustom(true,"Product deleted"),HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponseCustom(true,"Product deleted"),HttpStatus.OK);
     }
 }

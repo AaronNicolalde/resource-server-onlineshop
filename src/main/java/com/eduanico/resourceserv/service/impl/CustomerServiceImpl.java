@@ -16,7 +16,7 @@ import java.util.List;
 public class CustomerServiceImpl implements CustomerService {
 
     @Autowired
-    private CustomerRepository customerRepository;
+    CustomerRepository customerRepository;
 
     @Override
     public Customer createCustomer(Customer c) {
@@ -32,7 +32,6 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public List<Customer> listCustomers() {
-        List<Customer> customers = customerRepository.findAll();
-        return customers;
+        return customerRepository.findAll();
     }
 }

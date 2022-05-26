@@ -12,11 +12,7 @@ import javax.persistence.Table;
 @Setter
 @NoArgsConstructor
 @Embeddable
-//@Entity
 public class Address {
-//    @Id
-//    @Column(name = "id", nullable = false)
-//    private Long id;
 
     private String address;
 

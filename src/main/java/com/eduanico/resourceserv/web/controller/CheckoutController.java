@@ -20,7 +20,7 @@ import java.util.List;
 public class CheckoutController {
 
     @Autowired
-    private CheckoutService checkoutService;
+    CheckoutService checkoutService;
 
     @Operation(summary = "Add a checkout in database")
     @ApiResponses(value ={
@@ -33,9 +33,9 @@ public class CheckoutController {
     public ResponseEntity<ApiResponseCustom> addCheckout(Principal principal, @RequestParam("productName") String productName, @RequestParam("quantity") double quantity){
         try{
             checkoutService.startCheckout(principal.getName(), productName, quantity);
-            return new ResponseEntity<ApiResponseCustom>(new ApiResponseCustom(true,"Checkout created"), HttpStatus.CREATED);
+            return new ResponseEntity<>(new ApiResponseCustom(true,"Checkout created"), HttpStatus.CREATED);
         }catch (Exception e){
-            return new ResponseEntity<ApiResponseCustom>(new ApiResponseCustom(false,"Error creating checkout"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseCustom(false,"Error creating checkout"), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -46,11 +46,10 @@ public class CheckoutController {
             @ApiResponse ( responseCode = "404", description = "Not available", content = @Content),
             @ApiResponse ( responseCode = "401", description = "Not authorized", content = @Content)
     })
-//    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @GetMapping("/{id}")
     public ResponseEntity<Checkout> getCheckoutInformation(@PathVariable("id") Long checkoutId) {
         Checkout body = checkoutService.getCheckoutInformation(checkoutId);
-        return new ResponseEntity<Checkout> (body, HttpStatus.OK);
+        return new ResponseEntity<> (body, HttpStatus.OK);
     }
 
 
@@ -63,13 +62,8 @@ public class CheckoutController {
     })
     @GetMapping
     public ResponseEntity<List<Checkout>> getCheckouts() {
-        try{
-            List<Checkout> body = checkoutService.listCheckouts();
-            return new ResponseEntity<List<Checkout>>(body, HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
+        List<Checkout> body = checkoutService.listCheckouts();
+        return new ResponseEntity<>(body, HttpStatus.OK);
     }
 
     @Operation(summary = "Add a product to a checkout in database")
@@ -83,9 +77,9 @@ public class CheckoutController {
     public ResponseEntity<ApiResponseCustom> addProductToCheckout(@RequestParam("checkoutId") Long checkoutId, @RequestParam("productName") String productName, @RequestParam("quantity") double quantity){
         try{
             checkoutService.addProductToCheckout(checkoutId, productName, quantity);
-            return new ResponseEntity<ApiResponseCustom>(new ApiResponseCustom(true,"Product added to checkout"), HttpStatus.OK);
+            return new ResponseEntity<>(new ApiResponseCustom(true,"Product added to checkout"), HttpStatus.OK);
         }catch (Exception e){
-            return new ResponseEntity<ApiResponseCustom>(new ApiResponseCustom(false,"Product failed to add to checkout"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseCustom(false,"Product failed to add to checkout"), HttpStatus.BAD_REQUEST);
         }
 
     }
@@ -100,10 +94,10 @@ public class CheckoutController {
     @PutMapping("/modify-quantity")
     public ResponseEntity<ApiResponseCustom> modifyQuantityOfProduct(@RequestParam("checkoutId") Long checkoutId, @RequestParam("productName") String productName, @RequestParam("quantity") double quantity){
         try{
-            checkoutService.modifiyProductQuantity(checkoutId, productName, quantity);
-            return new ResponseEntity<ApiResponseCustom>(new ApiResponseCustom(true,"Product quantity updated on checkout"), HttpStatus.OK);
+            checkoutService.modifyProductQuantity(checkoutId, productName, quantity);
+            return new ResponseEntity<>(new ApiResponseCustom(true,"Product quantity updated on checkout"), HttpStatus.OK);
         }catch (Exception e){
-            return new ResponseEntity<ApiResponseCustom>(new ApiResponseCustom(false,"Product quantity not updated on checkout"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseCustom(false,"Product quantity not updated on checkout"), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -118,9 +112,9 @@ public class CheckoutController {
     public ResponseEntity<ApiResponseCustom> deleteProductFromCheckout(@RequestParam("checkoutId") Long checkoutId, @RequestParam("productName") String productName){
         try{
             checkoutService.removeProductFromCheckout(checkoutId, productName);
-            return new ResponseEntity<ApiResponseCustom>(new ApiResponseCustom(true,"Product removed from checkout"), HttpStatus.OK);
+            return new ResponseEntity<>(new ApiResponseCustom(true,"Product removed from checkout"), HttpStatus.OK);
         }catch (Exception e){
-            return new ResponseEntity<ApiResponseCustom>(new ApiResponseCustom(false,"Product not removed from checkout"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseCustom(false,"Product not removed from checkout"), HttpStatus.BAD_REQUEST);
         }
 
     }
@@ -136,9 +130,9 @@ public class CheckoutController {
     public ResponseEntity<ApiResponseCustom> setAddressForCustomer(@RequestParam("checkoutId") Long checkoutId, @RequestParam("index") int index){
         try{
             checkoutService.setAddressForDelivery(checkoutId, index);
-            return new ResponseEntity<ApiResponseCustom>(new ApiResponseCustom(true,"Address set for customer from checkout"), HttpStatus.OK);
+            return new ResponseEntity<>(new ApiResponseCustom(true,"Address set for customer from checkout"), HttpStatus.OK);
         }catch (Exception e){
-            return new ResponseEntity<ApiResponseCustom>(new ApiResponseCustom(false,"Address not set for customer from checkout"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseCustom(false,"Address not set for customer from checkout"), HttpStatus.BAD_REQUEST);
         }
 
     }
@@ -154,9 +148,9 @@ public class CheckoutController {
     public ResponseEntity<ApiResponseCustom> modifyAddressForCustomer(@RequestParam("checkoutId") Long checkoutId, @RequestParam("index") int index){
         try{
             checkoutService.modifyAddressForDelivery(checkoutId, index);
-            return new ResponseEntity<ApiResponseCustom>(new ApiResponseCustom(true,"Address modify for customer from checkout"), HttpStatus.OK);
+            return new ResponseEntity<>(new ApiResponseCustom(true,"Address modify for customer from checkout"), HttpStatus.OK);
         }catch (Exception e){
-            return new ResponseEntity<ApiResponseCustom>(new ApiResponseCustom(false,"Address not modify for customer from checkout"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseCustom(false,"Address not modify for customer from checkout"), HttpStatus.BAD_REQUEST);
         }
 
     }
@@ -172,9 +166,9 @@ public class CheckoutController {
     public ResponseEntity<ApiResponseCustom> setPaymentForCustomer(@RequestParam("checkoutId") Long checkoutId, @RequestParam("index") int index){
         try{
             checkoutService.setPaymentMethod(checkoutId, index);
-            return new ResponseEntity<ApiResponseCustom>(new ApiResponseCustom(true,"Payment method set for customer from checkout"), HttpStatus.OK);
+            return new ResponseEntity<>(new ApiResponseCustom(true,"Payment method set for customer from checkout"), HttpStatus.OK);
         }catch (Exception e){
-            return new ResponseEntity<ApiResponseCustom>(new ApiResponseCustom(false,"Payment method fail to set for customer from checkout"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseCustom(false,"Payment method fail to set for customer from checkout"), HttpStatus.BAD_REQUEST);
 
         }
 
@@ -191,9 +185,9 @@ public class CheckoutController {
     public ResponseEntity<ApiResponseCustom> modifyPaymentForCustomer(@RequestParam("checkoutId") Long checkoutId, @RequestParam("index") int index){
         try{
             checkoutService.modifyPaymentMethod(checkoutId, index);
-            return new ResponseEntity<ApiResponseCustom>(new ApiResponseCustom(true,"Payment method momdify for customer from checkout"), HttpStatus.OK);
+            return new ResponseEntity<>(new ApiResponseCustom(true,"Payment method modify for customer from checkout"), HttpStatus.OK);
         }catch (Exception e){
-            return new ResponseEntity<ApiResponseCustom>(new ApiResponseCustom(false,"Error in modify Payment method for customer from checkout"), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiResponseCustom(false,"Error in modify Payment method for customer from checkout"), HttpStatus.BAD_REQUEST);
         }
     }
 

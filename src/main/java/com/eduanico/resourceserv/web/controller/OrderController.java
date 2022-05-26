@@ -31,10 +31,10 @@ public class OrderController {
     })
     @PostMapping
     public ResponseEntity<ApiResponseCustom> addOrder(@RequestParam("checkoutId") Long checkoutId){
-        if(orderService.createOrder(checkoutId) != null){
-            return new ResponseEntity<ApiResponseCustom>(new ApiResponseCustom(true,"Order created"), HttpStatus.CREATED);
+        if(orderService.createOrder(checkoutId) == null){
+            return new ResponseEntity<>(new ApiResponseCustom(false,"Order not created"), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<ApiResponseCustom>(new ApiResponseCustom(false,"Order not created"), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ApiResponseCustom(true,"Order created"), HttpStatus.CREATED);
     }
 
     @Operation(summary = "To fetch all orders in database")
@@ -47,7 +47,7 @@ public class OrderController {
     @GetMapping
     public ResponseEntity<List<Order>> getProducts() {
         List<Order> body = orderService.listOrders();
-        return new ResponseEntity<List<Order>>(body, HttpStatus.OK);
+        return new ResponseEntity<>(body, HttpStatus.OK);
     }
 
 }

@@ -145,7 +145,7 @@ class CheckoutServiceImplTest {
         when(productRepository.findByName(anyString())).thenReturn(checkout.getProductList().get(0));
         when(customerRepository.findByUsername(anyString())).thenReturn(new Customer());
 
-        checkoutService.modifiyProductQuantity(1L,"apple",1.0);
+        checkoutService.modifyProductQuantity(1L,"apple",1.0);
 
         assertThat(checkout.getProductList().get(0).getQuantity()).isEqualTo(1.0);
     }

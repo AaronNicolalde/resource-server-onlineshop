@@ -36,11 +36,10 @@ public class CustomerController {
     @PostMapping
     public ResponseEntity<ApiResponseCustom> addCustomer(Principal principal){
         String username = principal.getName();
-
         if(customerService.createCustomer(new Customer(username)) != null){
-            return new ResponseEntity<ApiResponseCustom>(new ApiResponseCustom(true,"Customer created"), HttpStatus.CREATED);
+            return new ResponseEntity<>(new ApiResponseCustom(true,"Customer created"), HttpStatus.CREATED);
         }
-        return new ResponseEntity<ApiResponseCustom>(new ApiResponseCustom(false,"Customer already created"), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ApiResponseCustom(false,"Customer already created"), HttpStatus.BAD_REQUEST);
     }
 
     @Operation(summary = "To fetch all customers in database")
@@ -53,7 +52,7 @@ public class CustomerController {
     @GetMapping
     public ResponseEntity<List<Customer>> getCustomers() {
         List<Customer> body = customerService.listCustomers();
-        return new ResponseEntity<List<Customer>>(body, HttpStatus.OK);
+        return new ResponseEntity<>(body, HttpStatus.OK);
     }
 
 }

@@ -11,7 +11,7 @@ public interface CheckoutService {
 
     List<Checkout> listCheckouts();
 
-    void modifiyProductQuantity(Long checkoutId, String productName, double quantity);
+    void modifyProductQuantity(Long checkoutId, String productName, double quantity);
     void removeProductFromCheckout(Long checkoutId, String productName);
 
     void setAddressForDelivery(Long checkoutId, int index);

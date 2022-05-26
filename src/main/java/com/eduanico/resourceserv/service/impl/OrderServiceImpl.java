@@ -21,7 +21,7 @@ public class OrderServiceImpl implements OrderService {
 
     public Order createOrder(Long checkoutId){
         Checkout checkout = checkoutRepository.findByCheckoutId(checkoutId);
-        if(checkout !=null){
+        if(checkout != null){
             Address address = checkout.getDeliveryAddress();
             PaymentMethod payment = checkout.getPaymentMethodSelected();
             double total = checkout.getTotal();
@@ -34,8 +34,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> listOrders() {
-        List<Order> orders = orderRepository.findAll();
-        return orders;
+        return orderRepository.findAll();
     }
 
 
