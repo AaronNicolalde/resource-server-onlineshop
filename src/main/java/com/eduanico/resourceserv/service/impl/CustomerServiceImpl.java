@@ -23,10 +23,10 @@ public class CustomerServiceImpl implements CustomerService {
         if(customerRepository.findByUsername(c.getUsername()) != null){
             return null;
         }
-        c.getAddress().add(new Address("address1"));
-        c.getAddress().add(new Address("address2"));
-        c.getPaymentMethod().add(new PaymentMethod("credit card"));
-        c.getPaymentMethod().add(new PaymentMethod("debit card"));
+        c.getAddress().add(new Address("USA", "boulevard av", "91905"));
+        c.getAddress().add(new Address("USA", "miami FL", "33101"));
+        c.getPaymentMethod().add(new PaymentMethod("credit card","Eduardo Nicolalde", "1111222233334444","11/24","111"));
+        c.getPaymentMethod().add(new PaymentMethod("debit card","Eduardo Nicolalde", "444433332222111","04/26","223"));
         return customerRepository.save(c);
     }
 

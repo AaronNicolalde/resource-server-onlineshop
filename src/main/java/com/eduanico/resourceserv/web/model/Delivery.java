@@ -5,10 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.PositiveOrZero;
 
 @Getter
@@ -21,18 +18,18 @@ public class Delivery {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long deliveryId;
 
-    private String deliveryAddress;
+    @Embedded
+    private Address deliveryAddress;
 
-    private String registerPayment;
+    @Embedded
+    private PaymentMethod registerPayment;
 
     @PositiveOrZero
     private double totalPurchase;
 
-    public Delivery(String address, String payment, double total) {
-        this.deliveryAddress = address;
-        this.registerPayment = payment;
-        this.totalPurchase = total;
+    public Delivery(Address deliveryAddress, PaymentMethod registerPayment, double totalPurchase) {
+        this.deliveryAddress = deliveryAddress;
+        this.registerPayment = registerPayment;
+        this.totalPurchase = totalPurchase;
     }
-
-
 }

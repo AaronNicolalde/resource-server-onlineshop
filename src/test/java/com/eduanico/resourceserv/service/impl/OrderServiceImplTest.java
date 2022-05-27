@@ -69,14 +69,14 @@ class OrderServiceImplTest {
 
     Checkout createCheckout(){
         Customer customer = new Customer("eduanico@test.com");
-        customer.getAddress().add(new Address("address1"));
-        customer.getAddress().add(new Address("address2"));
-        customer.getPaymentMethod().add(new PaymentMethod("credit card"));
-        customer.getPaymentMethod().add(new PaymentMethod("debit card"));
+        customer.getAddress().add(new Address("USA", "address1", "91905"));
+        customer.getAddress().add(new Address("USA", "address2", "33101"));
+        customer.getPaymentMethod().add(new PaymentMethod("credit card","Eduardo Nicolalde", "1111222233334444","11/24","111"));
+        customer.getPaymentMethod().add(new PaymentMethod("debit card","Eduardo Nicolalde", "444433332222111","04/26","223"));
         Product p = new Product("apple",10.0,0.35);
         List<Product> productList = new ArrayList<Product>();
         productList.add(p);
-        checkout = new Checkout(1L,"eduanico@test.com",productList,10.0,new Address("address1"),new PaymentMethod("credit card"));
+        checkout = new Checkout(1L,"eduanico@test.com",productList,10.0,new Address("USA", "address1", "91905"),new PaymentMethod("credit card","Eduardo Nicolalde", "1111222233334444","11/24","111"));
         return checkout;
     }
 

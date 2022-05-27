@@ -14,11 +14,15 @@ import javax.persistence.Table;
 @Embeddable
 public class Address {
 
+    private String country;
+
     private String address;
 
+    private String zipCode;
 
-
-    public Address(String address) {
+    public Address(String country, String address, String zipCode) {
+        this.country = country;
         this.address = address;
+        this.zipCode = zipCode;
     }
 }
